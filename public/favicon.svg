@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Darumix">
+ <defs>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#12a37b"/>
+      <stop offset="0.55" stop-color="#0b6b52"/>
+      <stop offset="1" stop-color="#064e3b"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4dfa8"/>
+      <stop offset="1" stop-color="#c9a75a"/>
+    </linearGradient>
+ </defs>
+ <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#glass)"/>
+ <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#shine)"/>
+ <rect x="3.25" y="3.25" width="57.5" height="57.5" rx="16.75" fill="none" stroke="#ffffff" stroke-opacity="0.42" stroke-width="1.5"/>
+ <path d="M23 18.5h8.4c8.6 0 14.1 5.1 14.1 13.5S39.9 45.5 31.3 45.5H23z" fill="none" stroke="#ffffff" stroke-width="4.4" stroke-linejoin="round"/>
+ <path d="M30.4 26.5h1.1c3.7 0 6.2 2.2 6.2 5.5s-2.5 5.5-6.2 5.5h-1.1z" fill="#a9f0d8"/>
+ <circle cx="45.4" cy="19.6" r="4.2" fill="url(#gold)"/>
+</svg>

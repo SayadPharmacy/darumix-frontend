@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+ <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b6b52" />
+    <meta name="color-scheme" content="light" />
+    <title>دارومیکس | داروخانه آنلاین و خدمات سلامت</title>
+    <meta name="description" content="دارومیکس، داروخانه آنلاین و فروشگاه محصولات سلامت؛ خرید دارو، مکمل و لوازم بهداشتی با ارسال سریع، مشاوره رایگان داروساز و ثبت نسخه الکترونیکی." />
+    <meta name="keywords" content="داروخانه آنلاین, دارومیکس, خرید مکمل, نسخه الکترونیکی, مشاوره داروساز, لوازم بهداشتی, سلامت" />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="دارومیکس" />
+    <meta property="og:title" content="دارومیکس | داروخانه آنلاین و خدمات سلامت" />
+    <meta property="og:description" content="دارو، مکمل و محصولات سلامت با ارسال سریع و مشاوره تخصصی داروساز." />
+    <meta property="og:locale" content="fa_IR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./favicon.svg" />
+    <style>
+      /* Critical shell styles: paint the brand background before the bundle loads
+         so there is never a white flash on slow connections. */
+      html { background: #eef4f1; }
+      #app { min-height: 100vh; }
+      .boot {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+        color: #0b6b52;
+      }
+      .boot__mark {
+        display: grid;
+        gap: 14px;
+        justify-items: center;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+      .boot__ring {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 3px solid rgba(11, 107, 82, 0.18);
+        border-top-color: #0b6b52;
+        animation: bootspin 0.9s linear infinite;
+      }
+      @keyframes bootspin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        .boot__ring { animation-duration: 2.4s; }
+      }
+      .noscript {
+        font-family: system-ui, Tahoma, sans-serif;
+        direction: rtl;
+        padding: 40px 24px;
+        text-align: center;
+        color: #103a2f;
+      }
+    </style>
+ </head>
+ <body>
+    <div id="app">
+      <div class="boot">
+        <div class="boot__mark">
+          <span class="boot__ring" aria-hidden="true"></span>
+          <span>دارومیکس</span>
+        </div>
+      </div>
+    </div>
+    <noscript>
+      <div class="noscript">
+        <h1>دارومیکس</h1>
+        <p>برای استفاده از فروشگاه، لطفاً جاوااسکریپت مرورگر خود را فعال کنید.</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.js"></script>
+ </body>
+</html>

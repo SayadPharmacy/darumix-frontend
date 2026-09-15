@@ -1,0 +1,55 @@
+/* ==========================================================================
+   DARUMIX — generated product artwork
+   Products are illustrated with inline SVG (see src/ui/product-art.js) rather
+   than shipped photographs: zero image payload, zero layout shift, and one
+   consistent visual language across all 100+ products.
+   ========================================================================== */
+
+.product-art {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* Keep the illustration crisp at large sizes without blurring the strokes. */
+  shape-rendering: geometricPrecision;
+}
+
+/* The brand monogram tile in the brand directory. */
+.brand-art {
+  width: 56px;
+  height: 56px;
+  display: block;
+}
+
+/* Magazine covers. */
+.article-art {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Illustration containers inherit the glass card background, so the artwork
+   needs no backdrop of its own — only a soft inner glow on hover. */
+.p-card:hover .product-art,
+.gallery__main:hover .product-art {
+  transform: scale(1.05);
+  transition: transform var(--dur-slower) var(--ease-out);
+}
+
+.p-card .product-art,
+.gallery__main .product-art {
+  transition: transform var(--dur-slower) var(--ease-out);
+}
+
+/* The subtle float used on the hero panel illustration. */
+@keyframes art-breathe {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-6px) scale(1.02);
+  }
+}
+
+.product-art--breathe {
+  animation: art-breathe 7s var(--ease-in-out) infinite alternate;
+}

@@ -1,0 +1,301 @@
+/* ==========================================================================
+   DARUMIX — Design Tokens
+   The single source of truth for the Liquid Glass design system.
+   Everything downstream (glass utilities, components, pages) reads from here.
+   ========================================================================== */
+
+:root {
+  /* ---------- Brand palette ---------- */
+  --emerald-950: #052f24;
+  --emerald-900: #064e3b;
+  --emerald-800: #0b6b52;
+  --emerald-700: #0d7d60;
+  --emerald-600: #12a37b;
+  --emerald-500: #1fb98d;
+  --emerald-400: #4fcea4;
+  --emerald-300: #86e0c1;
+  --emerald-200: #bfeedd;
+  --emerald-100: #e3f7ef;
+
+  --mint-500: #2fd3a8;
+  --mint-400: #5fe0bd;
+  --mint-300: #9df0d8;
+  --mint-200: #cdf8ec;
+  --mint-100: #eafcf7;
+
+  --cream-500: #f0e2c8;
+  --cream-400: #f6ecd9;
+  --cream-300: #faf4e8;
+  --cream-200: #fdfaf2;
+
+  --gold-600: #b3873b;
+  --gold-500: #c9a75a;
+  --gold-400: #ddc07d;
+  --gold-300: #eddaab;
+  --gold-100: #f8f1df;
+
+  --ink-900: #0d2119;
+  --ink-800: #153026;
+  --ink-700: #235043;
+  --ink-600: #3d6a5b;
+  --ink-500: #5f8577;
+  --ink-400: #82a094;
+  --ink-300: #a9c0b6;
+  --ink-200: #cbdcd4;
+  --ink-100: #e5eeea;
+
+  --danger-600: #c0392f;
+  --danger-500: #d9553f;
+  --danger-100: #fdeceb;
+  --warn-600: #c47f14;
+  --warn-500: #e0a02f;
+  --warn-100: #fdf4e3;
+  --info-600: #2b6ea8;
+  --info-500: #3d8fd1;
+  --info-100: #eaf3fb;
+
+  /* ---------- Semantic ---------- */
+  --brand: var(--emerald-800);
+  --brand-strong: var(--emerald-900);
+  --brand-soft: var(--emerald-600);
+  --accent: var(--gold-500);
+
+  --text-strong: var(--ink-900);
+  --text: var(--ink-800);
+  --text-muted: var(--ink-600);
+  --text-soft: var(--ink-500);
+  --text-on-brand: #f4fffb;
+
+  --success: var(--emerald-700);
+  --success-bg: var(--emerald-100);
+  --danger: var(--danger-600);
+  --danger-bg: var(--danger-100);
+  --warn: var(--warn-600);
+  --warn-bg: var(--warn-100);
+  --info: var(--info-600);
+  --info-bg: var(--info-100);
+
+  /* ---------- Backdrop / page canvas ----------
+     A soft cream-to-mint wash. The fixed ambient orbs (layout.css) float on
+     top of this and are what make the glass panels read as translucent. */
+  --canvas: #eef4f1;
+  --canvas-warm: #f7f5ee;
+  --gradient-page: linear-gradient(
+    168deg,
+    #f3f7f4 0%,
+    #eef5f2 42%,
+    #f8f4ea 100%
+  );
+  --gradient-brand: linear-gradient(
+    135deg,
+    var(--emerald-700) 0%,
+    var(--emerald-800) 52%,
+    var(--emerald-900) 100%
+  );
+  --gradient-mint: linear-gradient(
+    135deg,
+    var(--mint-400) 0%,
+    var(--emerald-600) 100%
+  );
+  --gradient-gold: linear-gradient(
+    135deg,
+    var(--gold-400) 0%,
+    var(--gold-600) 100%
+  );
+  --gradient-text: linear-gradient(
+    120deg,
+    var(--emerald-800),
+    var(--emerald-600) 55%,
+    var(--gold-600)
+  );
+
+  /* ---------- Glass surfaces ----------
+     Layered translucency: each tier is slightly more opaque than the one
+     below it, which is what creates depth without heavy shadows. */
+  --glass-1-bg: rgba(255, 255, 255, 0.42);
+  --glass-2-bg: rgba(255, 255, 255, 0.58);
+  --glass-3-bg: rgba(255, 255, 255, 0.72);
+  --glass-solid-bg: rgba(255, 255, 255, 0.86);
+
+  --glass-tint-bg: rgba(227, 247, 239, 0.55);
+  --glass-brand-bg: linear-gradient(
+    140deg,
+    rgba(13, 125, 96, 0.9),
+    rgba(6, 78, 59, 0.94)
+  );
+  --glass-gold-bg: linear-gradient(
+    140deg,
+    rgba(237, 218, 171, 0.72),
+    rgba(201, 167, 90, 0.42)
+  );
+
+  --blur-sm: 10px;
+  --blur-md: 18px;
+  --blur-lg: 28px;
+  --blur-xl: 40px;
+
+  /* Hairline border + inner top highlight = the "glass edge". */
+  --glass-border: rgba(255, 255, 255, 0.62);
+  --glass-border-strong: rgba(255, 255, 255, 0.82);
+  --glass-border-soft: rgba(255, 255, 255, 0.38);
+  --glass-line: rgba(13, 125, 96, 0.12);
+  --glass-line-strong: rgba(13, 125, 96, 0.2);
+
+  --highlight-inner: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  --highlight-inner-strong:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.28);
+
+  /* A specular sheen used by .glass::after and by hero/decorative panels. */
+  --glass-sheen: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.06) 42%,
+    rgba(255, 255, 255, 0) 62%
+  );
+
+  /* ---------- Elevation ----------
+     Shadows stay soft and slightly green-tinted so they feel embedded in the
+     page rather than dropped on it. */
+  --shadow-xs: 0 1px 2px rgba(9, 45, 34, 0.05);
+  --shadow-sm: 0 2px 6px rgba(9, 45, 34, 0.06), 0 1px 2px rgba(9, 45, 34, 0.04);
+  --shadow-md:
+    0 10px 26px -12px rgba(9, 45, 34, 0.22), 0 2px 8px rgba(9, 45, 34, 0.05);
+  --shadow-lg:
+    0 22px 48px -20px rgba(9, 45, 34, 0.28), 0 4px 14px rgba(9, 45, 34, 0.06);
+  --shadow-xl:
+    0 38px 80px -32px rgba(9, 45, 34, 0.34), 0 8px 22px rgba(9, 45, 34, 0.07);
+  --shadow-brand: 0 16px 34px -14px rgba(11, 107, 82, 0.5);
+  --shadow-gold: 0 14px 30px -14px rgba(179, 135, 59, 0.45);
+  --shadow-inset: inset 0 2px 6px rgba(9, 45, 34, 0.06);
+  --ring-focus: 0 0 0 3px rgba(18, 163, 123, 0.28);
+  --ring-focus-inset: inset 0 0 0 2px rgba(18, 163, 123, 0.45);
+
+  /* ---------- Radii ---------- */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+  --r-2xl: 36px;
+  --r-pill: 999px;
+  --r-circle: 50%;
+
+  /* ---------- Spacing scale ---------- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 28px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --sp-24: 96px;
+
+  /* ---------- Typography ---------- */
+  --font-sans:
+    "Vazirmatn", "Vazirmatn FD", "IRANSansX", "IRANSans", "Segoe UI", Tahoma,
+    system-ui, -apple-system, "Noto Naskh Arabic", sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono:
+    "Vazirmatn", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  --fs-2xs: 0.6875rem;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-base: 0.9375rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.375rem;
+  --fs-2xl: 1.625rem;
+  --fs-3xl: 2rem;
+  --fs-4xl: 2.5rem;
+  --fs-5xl: 3.25rem;
+
+  --lh-tight: 1.35;
+  --lh-snug: 1.5;
+  --lh-base: 1.75;
+  --lh-loose: 2;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 800;
+
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+
+  /* ---------- Layout ---------- */
+  --shell-max: 1400px;
+  --content-max: 1240px;
+  --narrow-max: 820px;
+  --gutter: 16px;
+  --gutter-lg: 28px;
+  --header-h: 68px;
+  --admin-rail-w: 264px;
+
+  /* ---------- Motion ---------- */
+  --ease-out: cubic-bezier(0.22, 0.85, 0.26, 1);
+  --ease-in-out: cubic-bezier(0.55, 0.05, 0.35, 1);
+  --ease-spring: cubic-bezier(0.24, 1.24, 0.36, 1);
+  --dur-fast: 130ms;
+  --dur-base: 220ms;
+  --dur-slow: 380ms;
+  --dur-slower: 620ms;
+
+  /* ---------- Z-index ladder ---------- */
+  --z-base: 1;
+  --z-sticky: 60;
+  --z-header: 80;
+  --z-overlay: 120;
+  --z-drawer: 140;
+  --z-modal: 160;
+  --z-toast: 200;
+
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+/* --------------------------------------------------------------------------
+   Spatial / accessibility adjustments for narrow screens.
+   The glass effect is expensive on low-power phones, so blur is reduced a
+   little and gutters tighten for the mobile-first experience.
+   -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  :root {
+    --gutter: 12px;
+    --gutter-lg: 16px;
+    --header-h: 62px;
+    --blur-md: 16px;
+    --blur-lg: 24px;
+    --fs-4xl: 2rem;
+    --fs-5xl: 2.25rem;
+    --fs-3xl: 1.625rem;
+    --r-2xl: 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 32px;
+    --header-h: 76px;
+  }
+}
+
+/* Users who ask for less transparency get more opaque, blur-free surfaces. */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-1-bg: rgba(255, 255, 255, 0.94);
+    --glass-2-bg: rgba(255, 255, 255, 0.96);
+    --glass-3-bg: rgba(255, 255, 255, 0.98);
+    --blur-sm: 0px;
+    --blur-md: 0px;
+    --blur-lg: 0px;
+    --blur-xl: 0px;
+  }
+}

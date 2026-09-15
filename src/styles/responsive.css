@@ -1,0 +1,141 @@
+/* ==========================================================================
+   DARUMIX — small responsive guards layered on top of the component CSS.
+   Kept separate so the intent ("never overflow, never hide content on
+   phones") stays obvious and auditable.
+   ========================================================================== */
+
+/* Long unbroken strings (order codes, coupon codes, emails) must not widen
+   their container. */
+[data-clip],
+.order-code,
+.coupon-code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* The header collapses gracefully: brand shrinks first, then actions wrap. */
+@media (max-width: 480px) {
+  .site-header__inner {
+    gap: var(--sp-2);
+  }
+
+  .brand__name {
+    font-size: var(--fs-md);
+  }
+
+  .header-actions .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Toolbars: allow horizontal scroll rather than overflow when many actions
+   compete for space. */
+.toolbar-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.toolbar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Guard: any direct child of a grid track cannot force the track wider. */
+.grid,
+.auto-grid,
+.product-grid,
+.kpi-grid,
+.form-grid,
+.split,
+.cart-layout,
+.catalog-layout,
+.account-layout,
+.admin-shell,
+.footer-grid,
+.hero__grid,
+.pdp__grid,
+.newsletter,
+.promo-band {
+  min-width: 0;
+}
+
+.grid > *,
+.auto-grid > *,
+.product-grid > *,
+.kpi-grid > *,
+.form-grid > *,
+.split > *,
+.cart-layout > *,
+.catalog-layout > *,
+.account-layout > *,
+.admin-shell > *,
+.footer-grid > *,
+.hero__grid > *,
+.pdp__grid > *,
+.newsletter > *,
+.promo-band > * {
+  min-width: 0;
+}
+
+/* Prevent the sticky summary from being taller than the viewport on short
+   screens (small laptops in landscape). */
+@media (min-height: 0) and (min-width: 1024px) {
+  .summary-card,
+  .catalog-aside {
+    max-height: calc(100dvh - var(--header-h) - var(--sp-10));
+  }
+
+  .summary-card {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Wide tables inside cards should scroll, not push the card wider. */
+.card .table-wrap,
+.card .compare-wrap {
+  max-width: 100%;
+}
+
+/* Images without a source still occupy their box instead of collapsing. */
+img[data-broken] {
+  visibility: hidden;
+}
+
+/* Touch targets stay >= 40px on small screens. */
+@media (max-width: 767px) {
+  .btn--xs {
+    padding: 7px var(--sp-3);
+  }
+
+  .chip,
+  .pill-tab {
+    padding-block: 9px;
+  }
+}
+
+/* On very small screens the pdp action bar buttons should split evenly. */
+@media (max-width: 899px) {
+  .action-bar .btn {
+    flex: 1 1 0;
+  }
+}
+
+/* Add bottom space when the sticky action bar is present, so the footer
+   content is never covered. */
+.has-action-bar .app-main {
+  padding-bottom: 84px;
+}
+
+/* Ensure focus outlines are never clipped by overflow-hidden cards. */
+.card,
+.p-card,
+.article-card,
+.category-card {
+  overflow: visible;
+}
+
+.p-card,
+.article-card {
+  overflow: hidden;
+}

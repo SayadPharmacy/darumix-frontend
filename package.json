@@ -1,0 +1,15 @@
+{
+  "name": "darumix",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DARUMIX | دارومیکس - Liquid Glass pharmacy e-commerce frontend (Vite + vanilla JS)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173"
+  },
+  "devDependencies": {
+    "vite": "^4.5.3"
+  }
+}

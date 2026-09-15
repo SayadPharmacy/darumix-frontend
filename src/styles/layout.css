@@ -1,0 +1,1287 @@
+/* ==========================================================================
+   DARUMIX — Layout layer
+   Ambient backdrop, page shell, glass header/nav, footer, drawers, grids.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Ambient backdrop
+   Fixed, blurred colour fields sitting behind everything. They are the reason
+   translucent panels actually read as glass — glass over flat white looks
+   like nothing at all.
+   -------------------------------------------------------------------------- */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--gradient-page);
+}
+
+.ambient__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.ambient__orb--a {
+  width: 46vw;
+  min-width: 320px;
+  height: 46vw;
+  min-height: 320px;
+  top: -12vw;
+  inset-inline-start: -10vw;
+  background: radial-gradient(
+    circle at 32% 32%,
+    rgba(47, 211, 168, 0.72),
+    rgba(18, 163, 123, 0.12) 68%,
+    transparent 72%
+  );
+  animation: orb-float-a 26s var(--ease-in-out) infinite alternate;
+}
+
+.ambient__orb--b {
+  width: 38vw;
+  min-width: 260px;
+  height: 38vw;
+  min-height: 260px;
+  top: 8vh;
+  inset-inline-end: -14vw;
+  background: radial-gradient(
+    circle at 60% 40%,
+    rgba(240, 226, 200, 0.85),
+    rgba(221, 192, 125, 0.16) 66%,
+    transparent 72%
+  );
+  animation: orb-float-b 32s var(--ease-in-out) infinite alternate;
+}
+
+.ambient__orb--c {
+  width: 40vw;
+  min-width: 280px;
+  height: 40vw;
+  min-height: 280px;
+  bottom: -16vw;
+  inset-inline-start: 24vw;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(134, 224, 193, 0.6),
+    rgba(95, 224, 189, 0.1) 68%,
+    transparent 74%
+  );
+  animation: orb-float-c 38s var(--ease-in-out) infinite alternate;
+}
+
+/* Faint grain so large gradient areas don't band on cheap displays. */
+.ambient__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  mix-blend-mode: soft-light;
+  background-image: radial-gradient(rgba(6, 78, 59, 0.1) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+@keyframes orb-float-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6vw, 5vh, 0) scale(1.12);
+  }
+}
+
+@keyframes orb-float-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.06);
+  }
+  to {
+    transform: translate3d(-7vw, 8vh, 0) scale(1);
+  }
+}
+
+@keyframes orb-float-c {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(4vw, -6vh, 0) scale(1.1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. The glass surface system
+   Three tiers + solid/brand/tint variants. A single ::after carries the
+   specular sheen; because it is a pseudo-element it never intercepts clicks.
+   -------------------------------------------------------------------------- */
+.glass,
+.glass-2,
+.glass-3,
+.glass--solid,
+.glass--tint,
+.glass--brand,
+.glass--gold {
+  position: relative;
+  border: 1px solid var(--glass-border);
+  isolation: isolate;
+}
+
+.glass {
+  background: var(--glass-1-bg);
+  backdrop-filter: blur(var(--blur-md)) saturate(165%);
+  -webkit-backdrop-filter: blur(var(--blur-md)) saturate(165%);
+  box-shadow: var(--shadow-md), var(--highlight-inner);
+}
+
+.glass-2 {
+  background: var(--glass-2-bg);
+  backdrop-filter: blur(var(--blur-lg)) saturate(170%);
+  -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(170%);
+  box-shadow: var(--shadow-lg), var(--highlight-inner-strong);
+}
+
+.glass-3 {
+  background: var(--glass-3-bg);
+  backdrop-filter: blur(var(--blur-xl)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur-xl)) saturate(180%);
+  box-shadow: var(--shadow-xl), var(--highlight-inner-strong);
+}
+
+.glass--solid {
+  background: var(--glass-solid-bg);
+  backdrop-filter: blur(var(--blur-lg)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(160%);
+  box-shadow: var(--shadow-md), var(--highlight-inner);
+}
+
+.glass--tint {
+  background: var(--glass-tint-bg);
+  backdrop-filter: blur(var(--blur-md)) saturate(170%);
+  -webkit-backdrop-filter: blur(var(--blur-md)) saturate(170%);
+  box-shadow: var(--shadow-sm), var(--highlight-inner);
+  border-color: rgba(191, 238, 221, 0.7);
+}
+
+.glass--brand {
+  background: var(--glass-brand-bg);
+  backdrop-filter: blur(var(--blur-md)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--blur-md)) saturate(150%);
+  border-color: rgba(255, 255, 255, 0.26);
+  box-shadow:
+    var(--shadow-brand),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  color: var(--text-on-brand);
+}
+
+.glass--gold {
+  background: var(--glass-gold-bg);
+  backdrop-filter: blur(var(--blur-md)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--blur-md)) saturate(150%);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: var(--shadow-gold), var(--highlight-inner);
+}
+
+/* Sheen: a diagonal highlight across the top-inline-start corner. */
+.glass::after,
+.glass-2::after,
+.glass-3::after,
+.glass--solid::after,
+.glass--tint::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-sheen);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.glass-flat::after {
+  display: none;
+}
+
+/* Convenience radius modifiers shared by the glass utilities. */
+.radius-xs {
+  border-radius: var(--r-xs);
+}
+.radius-sm {
+  border-radius: var(--r-sm);
+}
+.radius-md {
+  border-radius: var(--r-md);
+}
+.radius-lg {
+  border-radius: var(--r-lg);
+}
+.radius-xl {
+  border-radius: var(--r-xl);
+}
+.radius-2xl {
+  border-radius: var(--r-2xl);
+}
+.radius-pill {
+  border-radius: var(--r-pill);
+}
+
+/* --------------------------------------------------------------------------
+   3. Page shell
+   -------------------------------------------------------------------------- */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.app-main {
+  flex: 1 1 auto;
+  width: 100%;
+  padding-top: var(--header-h);
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.shell--content {
+  max-width: var(--content-max);
+}
+
+.shell--narrow {
+  max-width: var(--narrow-max);
+}
+
+.section {
+  padding-block: var(--sp-10);
+}
+
+.section--tight {
+  padding-block: var(--sp-6);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-block: var(--sp-12);
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-block: var(--sp-16);
+  }
+}
+
+/* Route transition — cheap (opacity + small translate) and skipped entirely
+   when the user prefers reduced motion. */
+.route-view {
+  animation: route-in var(--dur-slow) var(--ease-out) both;
+}
+
+@keyframes route-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Section headings
+   -------------------------------------------------------------------------- */
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+
+.section-head__text {
+  min-width: 0;
+}
+
+.section-head__title {
+  margin: 0;
+  font-size: var(--fs-2xl);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.section-head__sub {
+  margin: var(--sp-2) 0 0;
+  color: var(--text-muted);
+  font-size: var(--fs-base);
+  max-width: 62ch;
+}
+
+@media (max-width: 600px) {
+  .section-head__title {
+    font-size: var(--fs-xl);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Grid systems — auto-fit so cards never need a media query per page.
+   -------------------------------------------------------------------------- */
+.grid {
+  display: grid;
+  gap: var(--sp-5);
+}
+
+.grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.grid--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Grid items default to min-content width, which lets long Persian titles push
+   past the track. minmax(0, 1fr) + min-width: 0 keeps cells honest. */
+.grid > * {
+  min-width: 0;
+}
+
+.auto-grid {
+  display: grid;
+  gap: var(--sp-5);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.auto-grid--wide {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.auto-grid--tight {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+/* Product grids: the card has a fixed-ish intrinsic width on phones. */
+.product-grid {
+  display: grid;
+  gap: var(--sp-4);
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
+@media (max-width: 420px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+    gap: var(--sp-3);
+  }
+}
+
+@media (max-width: 600px) {
+  .grid--2,
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .grid--2.grid--keep {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Two-column layouts that flip on small screens */
+.split {
+  display: grid;
+  gap: var(--sp-6);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
+  align-items: start;
+}
+
+.split--wide-aside {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+}
+
+.split--narrow-main {
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+}
+
+@media (max-width: 1023px) {
+  .split,
+  .split--wide-aside,
+  .split--narrow-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Header — a floating glass bar pinned to the top of the viewport.
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: var(--z-header);
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+  border-bottom: 1px solid var(--glass-border-soft);
+  transition:
+    background var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+/* Once scrolled, the bar solidifies slightly and lifts — a subtle depth cue. */
+.site-header.is-scrolled {
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 10px 30px -18px rgba(9, 45, 34, 0.35);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  min-width: 0;
+}
+
+/* Brand lockup */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-shrink: 0;
+  color: var(--text-strong);
+  border-radius: var(--r-md);
+}
+
+.brand:hover {
+  color: var(--brand);
+}
+
+.brand__mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: var(--gradient-brand);
+  box-shadow:
+    var(--shadow-brand),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.brand__mark svg {
+  width: 22px;
+  height: 22px;
+}
+
+.brand__text {
+  display: grid;
+  line-height: 1.15;
+  min-width: 0;
+}
+
+.brand__name {
+  font-weight: var(--fw-black);
+  font-size: var(--fs-lg);
+  letter-spacing: var(--tracking-tight);
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.brand__tag {
+  font-size: var(--fs-2xs);
+  color: var(--text-soft);
+  font-weight: var(--fw-medium);
+}
+
+@media (max-width: 420px) {
+  .brand__mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+  }
+
+  .brand__tag {
+    display: none;
+  }
+}
+
+/* Primary nav */
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin-inline-start: var(--sp-4);
+  min-width: 0;
+}
+
+.main-nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.main-nav__link:hover {
+  color: var(--brand);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.main-nav__link.is-active {
+  color: var(--brand-strong);
+  font-weight: var(--fw-bold);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: var(--shadow-xs), var(--highlight-inner);
+}
+
+.main-nav__link.is-active::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  inset-inline: 28%;
+  height: 2px;
+  border-radius: var(--r-pill);
+  background: var(--gradient-mint);
+}
+
+@media (max-width: 1100px) {
+  .main-nav {
+    display: none;
+  }
+}
+
+/* Header actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin-inline-start: auto;
+  flex-shrink: 0;
+}
+
+/* Search trigger mimics an input but is a real button (opens the overlay). */
+.search-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: min(34vw, 320px);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-xs), var(--highlight-inner);
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+  transition:
+    box-shadow var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out);
+}
+
+.search-trigger:hover {
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: var(--shadow-sm), var(--highlight-inner);
+}
+
+.search-trigger__hint {
+  margin-inline-start: auto;
+  font-size: var(--fs-2xs);
+  padding: 2px 7px;
+  border-radius: var(--r-xs);
+  background: rgba(13, 125, 96, 0.08);
+  border: 1px solid var(--glass-line);
+  color: var(--text-soft);
+  direction: ltr;
+}
+
+@media (max-width: 900px) {
+  .search-trigger {
+    width: auto;
+    padding: var(--sp-2);
+    border-radius: var(--r-circle);
+    aspect-ratio: 1;
+    justify-content: center;
+  }
+
+  .search-trigger__label,
+  .search-trigger__hint {
+    display: none;
+  }
+}
+
+/* Icon button used across the header, cards and toolbars. */
+.icon-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.icon-btn:hover {
+  color: var(--brand);
+  background: rgba(255, 255, 255, 0.72);
+  border-color: var(--glass-border);
+  transform: translateY(-1px);
+}
+
+.icon-btn:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-btn--sm {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-sm);
+}
+
+.icon-btn--sm svg {
+  width: 17px;
+  height: 17px;
+}
+
+.icon-btn--danger:hover {
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-color: rgba(192, 57, 47, 0.22);
+}
+
+/* Count badge on cart/wishlist/notifications */
+.icon-btn__badge {
+  position: absolute;
+  top: -2px;
+  inset-inline-end: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding-inline: 4px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-pill);
+  background: var(--gradient-mint);
+  color: #04322a;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  box-shadow: 0 3px 8px rgba(18, 163, 123, 0.45);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+}
+
+.icon-btn__badge--gold {
+  background: var(--gradient-gold);
+  color: #3b2a06;
+  box-shadow: 0 3px 8px rgba(179, 135, 59, 0.45);
+}
+
+.icon-btn__badge--muted {
+  background: var(--ink-300);
+  color: #123;
+  box-shadow: none;
+}
+
+/* Hamburger — mobile only */
+.nav-toggle {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .nav-toggle {
+    display: inline-grid;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Mobile navigation drawer
+   -------------------------------------------------------------------------- */
+.mobile-nav {
+  display: grid;
+  gap: var(--sp-5);
+}
+
+.mobile-nav__group-title {
+  margin: 0;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-soft);
+  text-transform: uppercase;
+}
+
+.mobile-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.mobile-nav__link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  color: var(--text);
+  font-weight: var(--fw-medium);
+  border: 1px solid transparent;
+}
+
+.mobile-nav__link:hover,
+.mobile-nav__link.is-active {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: var(--glass-border);
+  color: var(--brand);
+}
+
+.mobile-nav__link.is-active {
+  font-weight: var(--fw-bold);
+  box-shadow: var(--highlight-inner);
+}
+
+.mobile-nav__link svg {
+  width: 19px;
+  height: 19px;
+  color: var(--brand-soft);
+}
+
+.mobile-nav__link .mobile-nav__count {
+  margin-inline-start: auto;
+  font-size: var(--fs-xs);
+  color: var(--text-soft);
+}
+
+/* --------------------------------------------------------------------------
+   8. Footer
+   -------------------------------------------------------------------------- */
+.site-footer {
+  margin-top: var(--sp-12);
+  position: relative;
+}
+
+.site-footer__glass {
+  border-radius: var(--r-2xl) var(--r-2xl) 0 0;
+  border-bottom: 0;
+  padding: var(--sp-10) 0 var(--sp-6);
+}
+
+.footer-grid {
+  display: grid;
+  gap: var(--sp-8);
+  grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .footer-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sp-6);
+  }
+}
+
+.footer-col__title {
+  margin: 0 0 var(--sp-4);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--text-strong);
+}
+
+.footer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.footer-links a {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.footer-links a:hover {
+  color: var(--brand);
+  transform: translateX(-3px);
+}
+
+.footer-bottom {
+  margin-top: var(--sp-8);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--glass-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs-sm);
+  color: var(--text-soft);
+}
+
+.footer-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+/* Trust badges under the footer — small glass tiles. */
+.trust-tile {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--highlight-inner);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.trust-tile svg {
+  width: 16px;
+  height: 16px;
+  color: var(--brand-soft);
+}
+
+.social-row {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+/* --------------------------------------------------------------------------
+   9. Overlay + side drawer (cart, filters, mobile nav…)
+   -------------------------------------------------------------------------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: rgba(8, 34, 27, 0.32);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    visibility var(--dur-base);
+}
+
+.overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: var(--z-drawer);
+  width: min(94vw, 440px);
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(var(--blur-xl)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur-xl)) saturate(180%);
+  box-shadow: var(--shadow-xl);
+  visibility: hidden;
+  transition:
+    transform var(--dur-slow) var(--ease-out),
+    visibility var(--dur-slow);
+}
+
+/* RTL note: the cart lives on the *left* physically in an RTL layout, because
+   `inset-inline-start` maps to the right edge. Physical translate keeps the
+   animation direction correct regardless of writing mode. */
+.drawer--end {
+  inset-inline-start: 0;
+  transform: translateX(-100%);
+  border-inline-end: 1px solid var(--glass-border);
+}
+
+.drawer--start {
+  inset-inline-end: 0;
+  transform: translateX(100%);
+  border-inline-start: 1px solid var(--glass-border);
+}
+
+.drawer--bottom {
+  top: auto;
+  inset-inline: 0;
+  width: 100%;
+  max-height: 88vh;
+  border-radius: var(--r-2xl) var(--r-2xl) 0 0;
+  border-top: 1px solid var(--glass-border);
+  transform: translateY(100%);
+}
+
+.drawer.is-open {
+  visibility: visible;
+  transform: none;
+}
+
+.drawer--wide {
+  width: min(96vw, 620px);
+}
+
+.drawer__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-5) var(--sp-4);
+  border-bottom: 1px solid var(--glass-line);
+  flex-shrink: 0;
+}
+
+.drawer__title {
+  margin: 0;
+  font-size: var(--fs-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+
+.drawer__count {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text-soft);
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: rgba(13, 125, 96, 0.08);
+}
+
+.drawer__close {
+  margin-inline-start: auto;
+}
+
+.drawer__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--sp-5);
+  display: grid;
+  gap: var(--sp-4);
+  align-content: start;
+}
+
+.drawer__body--tight {
+  padding: var(--sp-4);
+}
+
+.drawer__footer {
+  flex-shrink: 0;
+  padding: var(--sp-5);
+  padding-bottom: calc(var(--sp-5) + var(--safe-b));
+  border-top: 1px solid var(--glass-line);
+  background: rgba(255, 255, 255, 0.5);
+  display: grid;
+  gap: var(--sp-3);
+}
+
+/* --------------------------------------------------------------------------
+   10. Sticky mobile action bar (product page / checkout)
+   -------------------------------------------------------------------------- */
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--gutter);
+  padding-bottom: calc(var(--sp-3) + var(--safe-b));
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+  border-top: 1px solid var(--glass-border);
+  box-shadow: 0 -10px 30px -20px rgba(9, 45, 34, 0.4);
+}
+
+@media (min-width: 900px) {
+  .action-bar {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. Utility helpers used throughout the UI layer
+   -------------------------------------------------------------------------- */
+.stack {
+  display: grid;
+  gap: var(--sp-4);
+}
+.stack--sm {
+  gap: var(--sp-2);
+}
+.stack--xs {
+  gap: var(--sp-1);
+}
+.stack--lg {
+  gap: var(--sp-6);
+}
+.stack--xl {
+  gap: var(--sp-8);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.row--nowrap {
+  flex-wrap: nowrap;
+}
+
+.row--between {
+  justify-content: space-between;
+}
+
+.row--end {
+  justify-content: flex-end;
+}
+
+.row--sm {
+  gap: var(--sp-2);
+}
+.row--lg {
+  gap: var(--sp-5);
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.shrink-0 {
+  flex-shrink: 0;
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+.mt-2 {
+  margin-top: var(--sp-2);
+}
+.mt-4 {
+  margin-top: var(--sp-4);
+}
+.mt-6 {
+  margin-top: var(--sp-6);
+}
+.mt-8 {
+  margin-top: var(--sp-8);
+}
+.mb-0 {
+  margin-bottom: 0;
+}
+.mb-2 {
+  margin-bottom: var(--sp-2);
+}
+.mb-4 {
+  margin-bottom: var(--sp-4);
+}
+.mb-6 {
+  margin-bottom: var(--sp-6);
+}
+.mb-8 {
+  margin-bottom: var(--sp-8);
+}
+.mx-auto {
+  margin-inline: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-start {
+  text-align: start;
+}
+.text-end {
+  text-align: end;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+.text-soft {
+  color: var(--text-soft);
+}
+.text-strong {
+  color: var(--text-strong);
+}
+.text-brand {
+  color: var(--brand);
+}
+.text-danger {
+  color: var(--danger);
+}
+.text-success {
+  color: var(--success);
+}
+.text-gold {
+  color: var(--gold-600);
+}
+
+.fs-xs {
+  font-size: var(--fs-xs);
+}
+.fs-sm {
+  font-size: var(--fs-sm);
+}
+.fs-lg {
+  font-size: var(--fs-lg);
+}
+.fw-bold {
+  font-weight: var(--fw-bold);
+}
+.fw-semibold {
+  font-weight: var(--fw-semibold);
+}
+
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+.relative {
+  position: relative;
+}
+
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.divider {
+  height: 1px;
+  background: var(--glass-line);
+  border: 0;
+}
+
+/* Truncation helpers */
+.clamp-1,
+.clamp-2,
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.clamp-1 {
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+}
+.clamp-2 {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.clamp-3 {
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+/* Hide on / show at breakpoints */
+.hide-mobile {
+  display: initial;
+}
+.show-mobile {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .hide-mobile {
+    display: none !important;
+  }
+  .show-mobile {
+    display: initial !important;
+  }
+  .show-mobile.block {
+    display: block !important;
+  }
+  .show-mobile.flex {
+    display: flex !important;
+  }
+  .show-mobile.grid {
+    display: grid !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+/* Screen-reader-only live region */
+.live-region {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}

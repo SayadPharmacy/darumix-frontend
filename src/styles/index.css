@@ -1,0 +1,13 @@
+/* ==========================================================================
+   DARUMIX — stylesheet entry point
+   Imported once from src/main.js. Order matters:
+   tokens → base → layout → components → pages → art → responsive guards.
+   ========================================================================== */
+
+@import "./tokens.css";
+@import "./base.css";
+@import "./layout.css";
+@import "./components.css";
+@import "./pages.css";
+@import "./art.css";
+@import "./responsive.css";
