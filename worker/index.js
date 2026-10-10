@@ -110,6 +110,7 @@ async function handle(request, env) {
       return json({ success: true, configured: Boolean(env.QANOON_BASE_URL && env.QANOON_USERNAME && env.QANOON_PASSWORD), mode: env.QANOON_MODE || "test" });
     }
     if (url.pathname === "/api/qanoon/settings" && request.method === "GET") {
+      if (!isInternal(request, env)) return fail(401, "UNAUTHORIZED", "دسترسی مجاز نیست.");
       return json(await qanoon(env, "/settings"));
     }
     if (url.pathname === "/api/qanoon/products" && request.method === "GET") {
