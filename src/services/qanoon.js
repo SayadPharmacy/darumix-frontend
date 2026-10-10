@@ -5,7 +5,7 @@
  * Qanoon product IDs are retained as qanoonGoodId; they must not be confused
  * with local storefront IDs until a persistent mapping is implemented.
  */
-const API_ROOT = "/api/qanoon";
+const API_ROOT = (import.meta.env.VITE_QANOON_API_BASE || "/api/qanoon").replace(/\/+$/, "");
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_ROOT}${path}`, {
