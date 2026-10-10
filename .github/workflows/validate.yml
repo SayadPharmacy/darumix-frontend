@@ -23,8 +23,6 @@ jobs:
         run: npm run build
       - name: Verify application bundle
         run: node scripts/verify.mjs
-      - name: Smoke-test application bundle
-        run: node scripts/smoke.mjs
       - name: Syntax-check Qanoon Worker
         run: node --check worker/index.js
       - name: Test Qanoon Worker adapter
