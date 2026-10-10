@@ -85,6 +85,11 @@ function safeError(error) {
   return fail(502, "QANOON_UNAVAILABLE", "اتصال به سرور قانون فارما برقرار نشد.");
 }
 function queryValue(url, key) { return (url.searchParams.get(key) || "").trim(); }
+function isInternal(request, env) {
+  const expected = env.DARUMIX_INTERNAL_API_KEY;
+  const supplied = request.headers.get("x-darumix-internal-key");
+  return Boolean(expected && supplied && supplied === expected);
+}
 function positiveInt(value, fallback = 1) {
   const number = Number(value);
   return Number.isInteger(number) && number > 0 ? number : fallback;
@@ -124,7 +129,12 @@ async function handle(request, env) {
       const params = new URLSearchParams();
       if (warehouse) params.set("warehouse", warehouse);
       if (good) params.set("good", good);
-      return json(await qanoon(env, `/goods/stock?${params.toString()}`));
+      const payload = await qanoon(env, `/goods/stock?${params.toString()}`);
+      // Never expose supplier purchase-cost information to storefront clients.
+      if (payload?.data?.goodStocks && Array.isArray(payload.data.goodStocks)) {
+        payload.data.goodStocks = payload.data.goodStocks.map(({ cost, ...publicFields }) => publicFields);
+      }
+      return json(payload);
     }
     if (url.pathname === "/api/qanoon/prescriptions" && request.method === "POST") {
       const input = await request.json();
