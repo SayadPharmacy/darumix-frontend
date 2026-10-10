@@ -138,6 +138,7 @@ async function handle(request, env) {
       return json(payload);
     }
     if (url.pathname === "/api/qanoon/prescriptions" && request.method === "POST") {
+      if (!isInternal(request, env)) return fail(401, "UNAUTHORIZED", "دسترسی مجاز نیست.");
       const input = await request.json();
       const user = requiredEnv(env, "QANOON_USER_ID");
       if (!Array.isArray(input.goods) || input.goods.length === 0) return fail(400, "EMPTY_GOODS", "سبد خرید خالی است.");
@@ -165,6 +166,7 @@ async function handle(request, env) {
       return json(await qanoon(env, "/prescription", { method: "POST", body }), 201);
     }
     if (url.pathname === "/api/qanoon/prescriptions" && request.method === "DELETE") {
+      if (!isInternal(request, env)) return fail(401, "UNAUTHORIZED", "دسترسی مجاز نیست.");
       const input = await request.json();
       if (!input.prescription) return fail(400, "PRESCRIPTION_REQUIRED", "شناسه سند فروش الزامی است.");
       return json(await qanoon(env, "/prescription", { method: "DELETE", body: {
@@ -173,6 +175,7 @@ async function handle(request, env) {
       }}));
     }
     if (url.pathname === "/api/qanoon/sell" && request.method === "POST") {
+      if (!isInternal(request, env)) return fail(401, "UNAUTHORIZED", "دسترسی مجاز نیست.");
       const input = await request.json();
       const uniqueId = String(input.uniqueId || "").trim();
       if (!uniqueId || !input.prescription || !input.bankAccount) return fail(400, "PAYMENT_FIELDS_REQUIRED", "شناسه یکتا، سند فروش و حساب بانکی الزامی است.");
