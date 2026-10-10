@@ -13,6 +13,7 @@ This Worker is a server-side adapter for the Qanoon Pharma REST API described in
   dashboard:
   - `QANOON_USERNAME`
   - `QANOON_PASSWORD`
+  - `DARUMIX_INTERNAL_API_KEY` (a long random secret for trusted server-to-server operations)
 - Set `QANOON_USER_ID` and `QANOON_WAREHOUSE_ID` only after inspecting the actual
   `GET /settings` response. Do not guess IDs.
 - This adapter does not implement a bank gateway. `POST /api/qanoon/sell` records the
@@ -29,6 +30,7 @@ From the `worker` directory:
 ```sh
 npx wrangler secret put QANOON_USERNAME
 npx wrangler secret put QANOON_PASSWORD
+npx wrangler secret put DARUMIX_INTERNAL_API_KEY
 ```
 
 Then deploy to a test Worker only after reviewing the HTTP transport concern:
@@ -60,7 +62,8 @@ sanitized Persian response; credentials and tokens are never returned.
    but does not explicitly document the scheme.
 2. Confirm availability and pricing calls with the test account.
 3. Add persistent database records, stock revalidation during checkout, and idempotency.
-4. Integrate the frontend service layer and map Qanoon goods IDs to storefront product IDs. Do not send the internal API key from browser code.
-5. Implement and verify the actual payment gateway callback/Ack workflow.
-6. Confirm image/product description source and safe product publication rules.
-7. Do not expose purchase-cost field `cost` from stock results to public storefronts.
+4. Configure frontend build variable `VITE_QANOON_API_BASE` to the deployed Worker origin plus `/api/qanoon` (or configure a same-origin Worker route). Do not assume `/api/qanoon` reaches the separate Worker automatically.
+5. Integrate the frontend service layer and map Qanoon goods IDs to storefront product IDs. Do not send the internal API key from browser code.
+6. Implement and verify the actual payment gateway callback/Ack workflow.
+7. Confirm image/product description source and safe product publication rules.
+8. Do not expose purchase-cost field `cost` from stock results to public storefronts.
