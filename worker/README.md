@@ -40,14 +40,14 @@ npx wrangler deploy
 ## Routes
 
 - `GET /api/qanoon/health` — configuration presence only; does not authenticate.
-- `GET /api/qanoon/settings` — Qanoon users, warehouses, tags and bank accounts.
+- `GET /api/qanoon/settings` — Qanoon users, warehouses, tags and bank accounts. Requires `x-darumix-internal-key`.
 - `GET /api/qanoon/products?tag=<comma-separated-ids>&goodType=pharma|nonPharma`
 - `GET /api/qanoon/stock?warehouse=<id>` and/or `?good=<id>`
-- `POST /api/qanoon/prescriptions` — creates Qanoon sales document; request fields:
+- `POST /api/qanoon/prescriptions` — creates Qanoon sales document; requires `x-darumix-internal-key`; request fields:
   `uniqueId`, `goods[]` with `qanoonGoodId` (or `_id`), `sellPrice`,
   `sellQuantity`, optional `expirationDate`; optional customer fields.
-- `DELETE /api/qanoon/prescriptions` — JSON body `{ "prescription": "<Qanoon _id>" }`.
-- `POST /api/qanoon/sell` — records Qanoon settlement; JSON body includes
+- `DELETE /api/qanoon/prescriptions` — requires `x-darumix-internal-key`; JSON body `{ "prescription": "<Qanoon _id>" }`.
+- `POST /api/qanoon/sell` — requires `x-darumix-internal-key`; records Qanoon settlement; JSON body includes
   `uniqueId`, `prescription`, `bankAccount`, optional `discount`.
 
 All successful upstream JSON responses are passed through. Errors are returned in a
@@ -60,7 +60,7 @@ sanitized Persian response; credentials and tokens are never returned.
    but does not explicitly document the scheme.
 2. Confirm availability and pricing calls with the test account.
 3. Add persistent database records, stock revalidation during checkout, and idempotency.
-4. Integrate the frontend service layer and map Qanoon goods IDs to storefront product IDs.
+4. Integrate the frontend service layer and map Qanoon goods IDs to storefront product IDs. Do not send the internal API key from browser code.
 5. Implement and verify the actual payment gateway callback/Ack workflow.
 6. Confirm image/product description source and safe product publication rules.
 7. Do not expose purchase-cost field `cost` from stock results to public storefronts.
