@@ -58,11 +58,18 @@ test("products route authenticates and forwards the supported filter", async (t)
   assert.deepEqual((await response.json()).data.goods, []);
 });
 
-test("privileged write routes deny requests without the internal key", async () => {
-  const response = await worker.fetch(req("/api/qanoon/prescriptions", {
-    method: "POST",
-    body: { uniqueId: "unit-test", goods: [{ qanoonGoodId: "item", sellPrice: 100, sellQuantity: 1 }] },
-  }), baseEnv);
-  assert.equal(response.status, 401);
-  assert.equal((await response.json()).error.code, "UNAUTHORIZED");
+test("all privileged write routes deny requests without the internal key", async () => {
+  const cases = [
+    req("/api/qanoon/prescriptions", {
+      method: "POST",
+      body: { uniqueId: "unit-test", goods: [{ qanoonGoodId: "item", sellPrice: 100, sellQuantity: 1 }] },
+    }),
+    req("/api/qanoon/prescriptions", { method: "DELETE", body: { prescription: "sale-id" } }),
+    req("/api/qanoon/sell", { method: "POST", body: { uniqueId: "unit-test", prescription: "sale-id", bankAccount: "bank-id" } }),
+  ];
+  for (const request of cases) {
+    const response = await worker.fetch(request, baseEnv);
+    assert.equal(response.status, 401);
+    assert.equal((await response.json()).error.code, "UNAUTHORIZED");
+  }
 });
