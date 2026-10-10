@@ -27,3 +27,5 @@ jobs:
         run: node scripts/smoke.mjs
       - name: Syntax-check Qanoon Worker
         run: node --check worker/index.js
+      - name: Test Qanoon Worker adapter
+        run: node --test worker/index.test.mjs
