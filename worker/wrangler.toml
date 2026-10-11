@@ -1,0 +1,13 @@
+name = "darumix-qanoon-adapter"
+main = "index.js"
+compatibility_date = "2026-10-10"
+workers_dev = true
+
+[vars]
+QANOON_BASE_URL = "http://test.qanoonpharma.com:2999"
+QANOON_MODE = "test"
+# Set this to the exact production frontend origin before browser use.
+# ALLOWED_ORIGIN = "https://darumix.ir"
+# Obtain these IDs from GET /api/qanoon/settings; do not guess.
+# QANOON_USER_ID = "..."
+# QANOON_WAREHOUSE_ID = "..."

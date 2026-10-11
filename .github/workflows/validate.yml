@@ -1,0 +1,29 @@
+name: DARUMIX validation
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, production-readiness]
+
+jobs:
+  frontend-build-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build frontend
+        run: npm run build
+      - name: Verify application bundle
+        run: node scripts/verify.mjs
+      - name: Syntax-check Qanoon Worker
+        run: node --check worker/index.js
+      - name: Test Qanoon Worker adapter
+        run: node --test worker/index.test.mjs
